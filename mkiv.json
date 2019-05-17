@@ -1,0 +1,47 @@
+{
+    "controllers": {
+        "my_dxl_controller": {
+            "sync_read": false,
+            "attached_motors": ["front", "back"],
+            "port": "auto"
+        }
+    },
+    "motorgroups": {
+        "front": ["front_left", "front_right"],
+        "back": ["back_left", "back_right"]
+    },
+    "motors": {
+        "front_left": {
+            "orientation": "indirect",
+            "type": "MX-12W",
+            "id": 1,
+            "angle_limit": [0.0, 0.0],
+            "wheel_mode": true,
+            "offset": 0.0
+        },
+        "front_right": {
+            "orientation": "direct",
+            "type": "MX-12W",
+            "id": 2,
+            "angle_limit": [0.0, 0.0],
+            "wheel_mode": true,
+            "offset": 0.0
+        },
+        "back_left": {
+            "orientation": "indirect",
+            "type": "MX-12W",
+            "id": 3,
+            "angle_limit": [0.0, 0.0],
+            "wheel_mode": true,
+            "offset": 0.0
+        },
+        "back_right": {
+            "orientation": "direct",
+            "type": "MX-12W",
+            "id": 4,
+            "angle_limit": [0.0, 0.0],
+            "wheel_mode": true,
+            "offset": 0.0
+        }
+    }
+}
