@@ -1,12 +1,12 @@
-# SARTRobot Mark III
-The scripts and programs written by the Semi-Autonomous Rescue Team for the S.A.R.T. Mark III rescue robot.
+# SARTRobot Mark IV
+The scripts and programs written by the Semi-Autonomous Rescue Team for the S.A.R.T. Mark IV rescue robot.
 
 Configuration files for camera-streaming software _Motion_ can be found in the **_Motion_** directory. Arduino code for sensor data can be found in **_Arduino_**
 
 ## Scripts
 
 ### _servo_party.py_
-This script provides a reusable class to control the movement of the robot and is used by the gamepad script and autonomy scripts. It manages connecting to the servos via the pyax12 library. It provides convenient functions for setting up and moving the servos.
+This script provides a reusable class to control the movement of the robot and is used by the gamepad script and autonomy scripts. It manages connecting to the servos via the pypot library. It provides convenient functions for setting up and moving the servos.
 
 ### _control_gamepad.py_
 This script handles the movement of the robot via gamepad. It runs a WebSocket client, which receives a JSON formatted string from the control panel. The string contains all the required data from the controller, such as what buttons are pressed and what position the thumb sticks and triggers are at. It processes this and calculates the appropriate speed and power distribution of the servos based on the thumb-stick or trigger values.
