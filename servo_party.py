@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-from pypot.robot import from_json
-import time
-from contextlib import closing
-
 class ServoParty():
 	def __init__(self):
+		# Import desired libraries when initialised.
 		# Initialise the motors by using the mkIV configuration
 		# Set all 
 		# Set shortname aliases
+		from pypot.robot import from_json
+		import time
+		from contextlib import closing
 		self.robot = from_json('mkiv.json')
 		for m in self.robot.motors:
 			m.compliant = False
