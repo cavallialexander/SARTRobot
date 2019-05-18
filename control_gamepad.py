@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from pyax12.connection import Connection
 from enum import IntEnum
 import time
 import websockets
