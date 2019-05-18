@@ -1,19 +1,58 @@
+#!/usr/bin/env python3
 from pypot.robot import from_json
 import time
+from contextlib import closing
 
 class ServoParty():
 	def __init__(self):
-		self.robot = from_json('my_robot.json')
-		for m in self.robot.motors: # Note that we always provide an alias for all motors.
+		# Initialise the motors by using the mkIV configuration
+		# Set all 
+		# Set shortname aliases
+		self.robot = from_json('mkiv.json')
+		for m in self.robot.motors:
 			m.compliant = False
 			m.goal_position = 0
+		self.fr = self.robot.front_right
+		self.fl = self.robot.front_left
+		self.br = self.robot.back_right
+		self.bl = self.robot.back_left
+		self.last_left = 0;
+		self.last_right = 0;
+		
 	def move(self, left, right):
-		self.robot.front_left.moving_speed = left;
-		self.robot.back_left.moving_speed = left;
-		self.robot.front_right.moving_speed = right;
-		self.robot.back_right.moving_speed = right;
+		# Move motors with designated speed, set last left and right (For compatibility, will be removed)
+		self.fl.moving_speed = left;
+		self.bl.moving_speed = left;
+		self.fr.moving_speed = right;
+		self.br.moving_speed = right;
+		self.last_left = left;
+		self.last_right = right;
+		
+	def move_raw(self, left, right):
+		# Move motors with designated speed
+		self.fl.moving_speed = left;
+		self.bl.moving_speed = left;
+		self.fr.moving_speed = right;
+		self.br.moving_speed = right;
+		
+	def move_raw_left(self, left):
+		# Move left motors with designated speed
+		self.fl.moving_speed = left;
+		self.bl.moving_speed = left;
+		
+	def move_raw_right(self, right):
+		# Move right motors with designated speed
+		self.fr.moving_speed = right;
+		self.br.moving_speed = right;
+		
 	def stop(self):
-		self.robot.front_left.moving_speed = 0;
-		self.robot.back_left.moving_speed = 0;
-		self.robot.front_right.moving_speed = 0;
-		self.robot.back_right.moving_speed = 0;
+		# Stop all motors
+		self.fl.moving_speed = 0;
+		self.bl.moving_speed = 0;
+		self.fr.moving_speed = 0;
+		self.br.moving_speed = 0;
+	def close(self):
+		# Cleanly close program (PyPot)s
+	with closing(from_json('mkiv.json')) as my_robot:
+		self.robot.close()
+		pass
