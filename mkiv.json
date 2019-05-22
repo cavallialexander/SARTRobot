@@ -7,8 +7,8 @@
         }
     },
     "motorgroups": {
-        "front": ["front_left", "front_right"],
-        "back": ["back_left", "back_right"]
+        "left": ["front_left", "back_left"],
+        "right": ["back_right", "front_right"]
     },
     "motors": {
         "front_left": {

@@ -48,7 +48,7 @@ class ServoParty():
 		self.br.moving_speed = 0;
 		
 	def close(self):
-		# Cleanly close program (PyPot)s
+		# Cleanly close program (PyPot) DOES NOT WORK
 		with closing(from_json('mkiv.json')) as my_robot:
 			self.robot.close()
 			pass
