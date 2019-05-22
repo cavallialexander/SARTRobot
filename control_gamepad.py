@@ -56,36 +56,23 @@ def steering(x, y):
 	# Make sure we don't have any decimals
 	left = round(left)
 	right = round(right)
-
-	# Different motors need to spin in different directions. We account for that here.	
-	if (left < 0):
-		left *= -1
-		left += 1024
-	if (right < 0):
-		right *= -1
-	elif right < 1024:
-		right += 1024
 	
 	# Only send message if it's different to the last one
 	if (left != servo_party.last_left and right != servo_party.last_right):
-		servo_party.move_raw(left, right)
-	
-	# Store this message for comparison next time
-	servo_party.last_left = left
-	servo_party.last_right = right
+		servo_party.move(left, right)
 
 def tank_control(left_trigger, right_trigger, left_bumper, right_bumper):
 
 	if (left_bumper): 
 		# Left bumper (left side backwards) take priority over trigger (forwards)
-		left = -512
+		left = -512# FIX
 	else: # Bumper not pressed, so we will use the trigger
 		# Multiply by speed_factor to get our final speed to be sent to the servos
 		left = left_trigger * servo_party.speed_factor
 
 	if (right_bumper): 
 		# Right bumper (right side backwards)
-		right = -512
+		right = -512#FIX
 	else: 
 		# Multiply by speed_factor to get our final speed to be sent to the servos
 		right = right_trigger * servo_party.speed_factor
@@ -93,21 +80,12 @@ def tank_control(left_trigger, right_trigger, left_bumper, right_bumper):
 	# Make sure we don't have any decimals
 	left = round(left)
 	right = round(right)
-
-	# The servos use 0 - 1023 as clockwise and 1024 - 2048 as counter clockwise, we account for that here
-	if (left < 0):
-		left *= -1
-		left += 1024
-	if (right < 0):
-		right *= -1
-	else:
-		right += 1024
-		
+	
 	# Only send message if it's different to the last one
 	if (left != servo_party.last_left):
-		servo_party.move_raw_left(left)
+		servo_party.move_left(left)
 	if (right != servo_party.last_right):
-		servo_party.move_raw_right(right)
+		servo_party.move_right(right)
 	
 	# Store this message for comparison next time
 	servo_party.last_left = left
@@ -137,9 +115,9 @@ def parseJSON(buf):
 def controlHandler (msg):
 	# Handle face buttons
 	if (msg["button_A"]):
-		servo_party.speed_factor = 1000
+		servo_party.speed_factor = 7
 	elif (msg["button_B"]):
-		servo_party.speed_factor = 500
+		servo_party.speed_factor = 5
 	# Handle various methods of controlling movement
 	x = msg["left_axis_x"] * -1
 	y = msg["left_axis_y"] * -1
@@ -158,7 +136,7 @@ async def recieveControlData(websocket, path):
 			
 def main():
 	print("Starting control data reciever")
-	start_server = websockets.serve(recieveControlData, "10.0.2.4", 5555)
+	start_server = websockets.serve(recieveControlData, "localhost", 5555)
 	asyncio.get_event_loop().run_until_complete(start_server)
 	asyncio.get_event_loop().run_forever()
 

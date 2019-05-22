@@ -6,7 +6,6 @@ class ServoParty():
 		# Set all 
 		# Set shortname aliases
 		from pypot.robot import from_json
-		import time
 		from contextlib import closing
 		self.robot = from_json('mkiv.json')
 		for m in self.robot.motors:
@@ -18,6 +17,7 @@ class ServoParty():
 		self.bl = self.robot.back_left
 		self.last_left = 0;
 		self.last_right = 0;
+		self.speed_factor = 5;
 		
 	def move(self, left, right):
 		# Move motors with designated speed, set last left and right (For compatibility, will be removed)
@@ -28,22 +28,17 @@ class ServoParty():
 		self.last_left = left;
 		self.last_right = right;
 		
-	def move_raw(self, left, right):
-		# Move motors with designated speed
-		self.fl.moving_speed = left;
-		self.bl.moving_speed = left;
-		self.fr.moving_speed = right;
-		self.br.moving_speed = right;
-		
-	def move_raw_left(self, left):
+	def move_left(self, left):
 		# Move left motors with designated speed
 		self.fl.moving_speed = left;
 		self.bl.moving_speed = left;
+		self.last_left = left;
 		
-	def move_raw_right(self, right):
+	def move_right(self, right):
 		# Move right motors with designated speed
 		self.fr.moving_speed = right;
 		self.br.moving_speed = right;
+		self.last_right = right;
 		
 	def stop(self):
 		# Stop all motors
@@ -51,8 +46,9 @@ class ServoParty():
 		self.bl.moving_speed = 0;
 		self.fr.moving_speed = 0;
 		self.br.moving_speed = 0;
+		
 	def close(self):
 		# Cleanly close program (PyPot)s
-	with closing(from_json('mkiv.json')) as my_robot:
-		self.robot.close()
-		pass
+		with closing(from_json('mkiv.json')) as my_robot:
+			self.robot.close()
+			pass
