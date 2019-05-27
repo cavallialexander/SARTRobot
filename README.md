@@ -1,4 +1,7 @@
 # SARTRobot Mark IV
+
+ALL CODE IN THIS REPOSITORY IS MOST LIKELY UNTESTED DUE TO LACK OF ACCESS TO THE SART ROBOT
+
 The scripts and programs written by the Semi-Autonomous Rescue Team for the S.A.R.T. Mark IV rescue robot.
 
 Configuration files for camera-streaming software _Motion_ can be found in the **_Motion_** directory. Arduino code for sensor data can be found in **_Arduino_**
