@@ -9,16 +9,34 @@ Configuration files for camera-streaming software _Motion_ can be found in the *
 ## Scripts
 
 ### _servo_party.py_
-This script provides a reusable class to control the movement of the robot and is used by the gamepad script and autonomy scripts. It manages connecting to the servos via the pypot library. It provides convenient functions for setting up and moving the servos.
+The servo_party script contains a single class which utilises the PyPot library. This class is reusable in other scripts for all movement based purposes such as Autonomy and Manual Control
 
 ### _control_gamepad.py_
-This script handles the movement of the robot via gamepad. It runs a WebSocket client, which receives a JSON formatted string from the control panel. The string contains all the required data from the controller, such as what buttons are pressed and what position the thumb sticks and triggers are at. It processes this and calculates the appropriate speed and power distribution of the servos based on the thumb-stick or trigger values.
+This script handles movement based on the data fetched from the SARTInterface once a button is pressed or the thumb sticks and triggers are moved. The data is recieved in a JSON format. From this information, the script sets the corresponding speeds and direction.
 
 ### _sensor_stream.py_
-This script handles getting data from the onboard Arduino 101 and system data from the UDOO and then streaming it to the control panel via a WebSocket server. This includes all the data from the distance, temperature and gas sensors from the Arduino. It uses the Python module psutil to get the CPU usage, highest CPU core temperature, total RAM and current RAM usage from the UDOO itself.
+This script grabs the data from the Arduino's and the mainboard(UDOO, Raspberry Pi, NanoPi, Jetson) and streams it to the control interface through a WebSocket server.
+
+Sensor data sent includes:
+- Distance
+- Temperature
+- Gas
+- CPU Usage
+- CPU Temperature
+- Total RAM and used RAM
 
 ### _stop_servos.py_
-In case of the all-to-common crash which leaves all the motors still spinning, this script will stop the motors from spinning. Although there is a failsafe in each of the main scripts that turns off the servos if the script stops, this provides a backup in case of an internal Python or system error.
+When the python script exits unexpectedly, this script is used as the last resort. Once run, all motors will stop spinning.
 
 ### _auto_pid.py_
 This script allows the robot to run in autonomous mode. It’s in very early stages currently but in the future, it will allow the robot to navigate any of the main courses autonomously.
+
+### SARTInterface
+The robot code in this repository is used in tandom with the [SARTInterface](https://github.com/brucbr/SARTInterface/) code.
+
+###Libraries
+
+- [PyPot](https://github.com/poppy-project/pypot/)
+- [WebSockets](https://github.com/aaugustin/websockets)
+
+If a library that doesn't come with Python as a standard is not listed here, please open an issue and let us know! S.A.R.T likes to give credit where it's due.
