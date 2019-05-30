@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from pyax12.connection import Connection
 from serial import Serial
 from enum import IntEnum
 from servo_party import ServoParty
@@ -20,7 +19,7 @@ K_d = 0
 speed = 400
 
 # When script exits or is interrupted stop all servos
-atexit.register(servo_party.stop)
+atexit.register(servo_party.stop())
 
 class Distance(IntEnum):
     FRONT = 0
