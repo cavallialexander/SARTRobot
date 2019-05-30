@@ -34,7 +34,7 @@ This script allows the robot to run in autonomous mode. It’s in very early sta
 ### SARTInterface
 The robot code in this repository is used in tandom with the [SARTInterface](https://github.com/brucbr/SARTInterface/) code.
 
-###Libraries
+### Libraries
 
 - [PyPot](https://github.com/poppy-project/pypot/)
 - [WebSockets](https://github.com/aaugustin/websockets)
