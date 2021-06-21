@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from motor_handler import MotorHandler
+from servo_handler import ServoHandler
 from websocket_process import WebSocketProcess
 import websockets
 import asyncio
@@ -9,6 +10,14 @@ import math
 import atexit
 import logging
 
+class ARM_MODES:
+    SHOULDER = 1
+    ELBOW = 2
+    WRIST = 3
+
+ARM = "ARM_MODE"
+FLAG_ARM = "ARM_MODE_FLAG"
+
 
 class ControlReceiver(WebSocketProcess):
     def __init__(self, mpid, pipe, config_file):
@@ -16,18 +25,29 @@ class ControlReceiver(WebSocketProcess):
         # Setup logger
         self.logger = logging.getLogger(__name__)
         # Create MotorHandler object to handle motors
-        self.motors = MotorHandler(self.config)
+        self.motors: MotorHandler = MotorHandler(self.config)
+        self.servos: ServoHandler = ServoHandler(self.config)
         # When script exits or is interrupted stop all servos
         atexit.register(self.motors.close)
         # Default controller state object
         self.state = {
             "LEFT_STICK_X": 0.0,
             "LEFT_STICK_Y": 0.0,
+            "RIGHT_STICK_X": 0.0,
+            "RIGHT_STICK_Y": 0.0,
             "LEFT_BOTTOM_SHOULDER": 0.0,
             "RIGHT_BOTTOM_SHOULDER": 0.0,
             "LEFT_TOP_SHOULDER": False,
-            "RIGHT_TOP_SHOULDER": False
+            "RIGHT_TOP_SHOULDER": False,
+            "ARM_MODE": ARM_MODES.SHOULDER,
+            "ARM_MODE_FLAG": False,
+            "GRIPPER": False,
         }
+
+    def set_arm_mode(self, mode):
+        self.state[FLAG_ARM] |= self.state[ARM] != mode
+        self.state[ARM] = mode
+
 
     def gamepad_movement_handler(self, type="TRIGGER"):
         if type == "TRIGGER":
@@ -64,6 +84,18 @@ class ControlReceiver(WebSocketProcess):
             # Send command to servos
             self.motors.move(left, right)
 
+    def arm_movement_handler(self):
+        vel = 0
+        if abs(self.state["LEFT_STICK_Y"]) > 0.5:
+            vel = math.copysign(1, self.state["LEFT_STICK_Y"])
+        if self.state[ARM] == ARM_MODES.SHOULDER:
+            self.servos.move(22, vel)
+        elif self.state[ARM] == ARM_MODES.ELBOW:
+            self.servos.move(23, vel)
+        elif self.state[ARM] == ARM_MODES.WRIST:
+            self.servos.move(24, vel)
+
+
     def keyboard_handler(self, control, value):
         speed = self.motors.speed
         if control == "FORWARD":
@@ -86,6 +118,9 @@ class ControlReceiver(WebSocketProcess):
                 self.motors.speed = max(127, speed - 128)
                 # Send a message to SensorStream to update the interface with the current speed
                 self.pipe.send(["SYNC_SPEED", self.motors.speed])
+        elif control == "ENTER":
+            if value == "DOWN":
+                self.state["ARM"] = not self.state["ARM"]   
 
     def message_handler(self, buf):
         # Load object from JSON
@@ -114,6 +149,20 @@ class ControlReceiver(WebSocketProcess):
                 if value == "DOWN":
                     self.motors.speed = max(127, self.motors.speed - 128)
                     self.pipe.send(["SYNC_SPEED", self.motors.speed])
+            # TOGGLE GRIPPER
+            elif control == "FACE_3":
+                if value == "DOWN":
+                    self.state["GRIPPER"] = not self.state["GRIPPER"]
+            #ARM MODES
+            elif control == "FACE_3":
+                if value == "DOWN":
+                    self.set_arm_mode(ARM_MODES.SHOULDER)
+            elif control == "FACE_1":
+                if value == "DOWN":
+                    self.set_arm_mode(ARM_MODES.ELBOW)
+            elif control == "FACE_3":
+                if value == "DOWN":
+                    self.set_arm_mode(ARM_MODES.WRIST)
         elif typ == "AXIS":
             # If axis, store as float
             value = float(msg["value"])
@@ -122,6 +171,11 @@ class ControlReceiver(WebSocketProcess):
             # Handle trigger and stick controls
             if control == "LEFT_STICK_X" or control == "LEFT_STICK_Y":
                 self.gamepad_movement_handler(type="STICK")
+            elif control == "RIGHT_STICK_X":
+                if self.state["GRIPPER"] and abs(self.state["LEFT_STICK_X"]) > 0.5:
+                    self.servos.move(21, math.copysign(1, self.state["LEFT_STICK_X"]))
+            elif control == "RIGHT_STICK_Y":
+                self.arm_movement_handler()
             else:
                 self.gamepad_movement_handler(type="TRIGGER")
 
