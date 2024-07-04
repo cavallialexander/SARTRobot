@@ -40,7 +40,7 @@ class SensorStream(WebSocketProcess):
             if sensor_config.get('enabled', False):
                 # Find the appropriate wrapper class and create the sensor object
                 type_ = sensor_config['type']
-                sensor = self.pm.wrappers[type_](sensor_config, firmata)
+                sensor = self.pm.wrappers[type_](sensor_config, firmata=firmata)
                 # Count the number of times we create a sensor of this type, to assign a unique id
                 if type_ not in self.sensor_count:
                     self.sensor_count[type_] = 1
