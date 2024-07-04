@@ -14,7 +14,7 @@ INSTALL_DIR=/opt
 MOTION_VER=4.3.2
 
 update_only='false'
-developer_versions='false'
+developer_versions='true'
 internal_update='false'
 
 apt_updated='false'
