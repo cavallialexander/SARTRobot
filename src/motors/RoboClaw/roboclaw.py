@@ -7,8 +7,8 @@ class RoboClawConnection(MotorWrapper):
     # What type of motor this wrapper handles
     type_ = 'roboclaw'
 
-    def __init__(self, config):
-        MotorWrapper.__init__(self, config)
+    def __init__(self, config, **kwargs):
+        MotorWrapper.__init__(self, config, **kwargs)
         self.port = config.get('port')
         self.address = 0x80
         self.channels = config.get('channels')

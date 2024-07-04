@@ -10,8 +10,8 @@ class DynamixelConnection(MotorWrapper):
     # What type of motor this wrapper handles
     type_ = 'dynamixel'
 
-    def __init__(self, config):
-        MotorWrapper.__init__(self, config)
+    def __init__(self, config, **kwargs):
+        MotorWrapper.__init__(self, config, **kwargs)
         self.port = config.get('port')
         self.baudrate = config.get('baudrate')
         self.ids = config.get('ids')
