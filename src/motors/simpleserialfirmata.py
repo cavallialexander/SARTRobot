@@ -45,6 +45,7 @@ class SimpleSerialConnection(MotorWrapper):
         self.baudrate = config.get('baudrate')
         self.tx = config.get('tx')
         self.rx = config.get('rx')
+        self.firmata.serialConfig(self.port, self.baudrate, self.rx, self.tx)
         self.channels = config.get('channels')
         try:
             self.channels.get('left')
@@ -59,16 +60,16 @@ class SimpleSerialConnection(MotorWrapper):
             offset = 64 if left > 0 else 0
             channel = self.channels.get('left') * 128
             msg = offset + channel + abs(round(62 / 1000 * left))
-            self.serial.write(bytes([msg]))
+            self.firmata.serialWriteRaw(self.port, bytes([msg]))
         # Right side
         if right is not None:
             offset = 64 if right > 0 else 0
             channel = self.channels.get('right') * 128
             msg = offset + channel + abs(round(62 / 1000 * right))
-            self.serial.write(bytes([msg]))
+            self.firmata.serialWriteRaw(self.port, bytes([msg]))
 
     def stop(self):
-        self.serial.write(bytes([0]))
+        self.firmata.serialWriteRaw(self.port, bytes([0]))
 
     def close(self):
-        self.serial.close()
+        pass
