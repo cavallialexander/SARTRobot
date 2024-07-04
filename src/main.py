@@ -42,6 +42,7 @@ class Manager:
         self.sensor_pipe, self.control_pipe = Pipe(duplex=False)
         try:
             firmataConf = config["firmata"]
+            self.logger.log("Firmata Conf", firmataConf)
             self.firmata = Leonardo(firmataConf["port"], baudrate=firmataConf["baudrate"], timeout=5)
         except:
             self.logger.warning("No Firmata config found or it could not be connected to")
