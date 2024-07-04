@@ -5,8 +5,8 @@ class SwitchWrapper(SensorWrapper):
     # What type of sensor this wrapper handles
     type_ = 'switch'
 
-    def __init__(self, config):
-        SensorWrapper.__init__(self, config)
+    def __init__(self, config, **kwargs):
+        SensorWrapper.__init__(self, config, **kwargs)
 
         # Try importing the RPi GPIO module but don't throw an error if it fails, instead try to import the Jetson one
         # If that fails too, let it throw an error

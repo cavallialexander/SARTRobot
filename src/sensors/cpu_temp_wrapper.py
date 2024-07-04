@@ -6,8 +6,8 @@ class CPUTempWrapper(SensorWrapper):
     # What type of sensor this wrapper handles
     type_ = 'cpu_temp'
 
-    def __init__(self, config):
-        SensorWrapper.__init__(self, config)
+    def __init__(self, config, **kwargs):
+        SensorWrapper.__init__(self, config, **kwargs)
 
     def get_data(self):
         temperature = None

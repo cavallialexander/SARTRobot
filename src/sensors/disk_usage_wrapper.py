@@ -6,8 +6,8 @@ class DiskUsageWrapper(SensorWrapper):
     # What type of sensor this wrapper handles
     type_ = 'disk_usage'
 
-    def __init__(self, config):
-        SensorWrapper.__init__(self, config)
+    def __init__(self, config, **kwargs):
+        SensorWrapper.__init__(self, config, **kwargs)
         # Report in GB with 2dp by default, but allow other precisions
         self.precision = int(config.get('precision', 2))
 

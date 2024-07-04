@@ -6,8 +6,8 @@ class RandomWrapper(SensorWrapper):
     # What type of sensor this wrapper handles
     type_ = 'random'
 
-    def __init__(self, config):
-        SensorWrapper.__init__(self, config)
+    def __init__(self, config, **kwargs):
+        SensorWrapper.__init__(self, config, **kwargs)
         self.min = int(config.get('min', 25))
         self.max = int(config.get('max', 30))
 

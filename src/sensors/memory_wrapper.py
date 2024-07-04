@@ -6,8 +6,8 @@ class MemoryWrapper(SensorWrapper):
     # What type of sensor this wrapper handles
     type_ = 'memory'
 
-    def __init__(self, config):
-        SensorWrapper.__init__(self, config)
+    def __init__(self, config, **kwargs):
+        SensorWrapper.__init__(self, config, **kwargs)
 
     def get_initial(self):
         # Get total memory, in MB, this is used on circle graphs to calculate percentage
