@@ -59,7 +59,7 @@ checkout_release () {
   if [ $developer_versions == 'false' ]
   then
     cd sights
-    git checkout -f master
+    git checkout -f sart_2024
     git checkout `git tag | sort -V | tail -1`
     cd ..
   fi
@@ -288,7 +288,7 @@ update () {
     echo -e "\nUpdating SIGHTS..."
 
     cd sights
-    git checkout -f master
+    git checkout -f sart_2024
     git pull
     cd $INSTALL_DIR
 
