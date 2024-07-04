@@ -2,7 +2,8 @@ import logging
 
 
 class SensorWrapper:
-    def __init__(self, config):
+    def __init__(self, config, firmata=None):
+        self.firmata = firmata
         # Setup logger
         self.logger = logging.getLogger(__name__)
         # Last time get_data() was called

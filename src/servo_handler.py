@@ -15,7 +15,7 @@ from typing import List, Optional
 
 
 class ServoHandler:
-    def __init__(self, config, pipe):
+    def __init__(self, config, pipe, firmata=None):
         # Setup logger
         self.logger = logging.getLogger(__name__)
         self.pipe = pipe
@@ -29,7 +29,7 @@ class ServoHandler:
         try:
             # Create servo connection (from a list loaded by the plugin manager) using
             # class specified in the config
-            self.connection: ServoWrapper = self.pm.wrappers[self.type](config['servos'])
+            self.connection: ServoWrapper = self.pm.wrappers[self.type](config['servos'], firmata)
         except Exception as e:
             if isinstance(e, KeyError):
                 self.logger.error(f"Could not determine servo connection type "

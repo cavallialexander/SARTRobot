@@ -9,7 +9,7 @@ from motors.virtual import VirtualConnection
 
 
 class MotorHandler:
-    def __init__(self, config):
+    def __init__(self, config, firmata=None):
         # Setup logger
         self.logger = logging.getLogger(__name__)
         # Create new plugin manager looking for subclasses of MotorWrapper in "src/motors/"
@@ -21,7 +21,7 @@ class MotorHandler:
         self.logger.info(f"Opening motor connection of type '{self.type}'")
         # Create motor connection (from a list loaded by the plugin manager) using class specified in the config
         try:
-            self.connection = self.pm.wrappers[self.type](config['motors'])
+            self.connection = self.pm.wrappers[self.type](config['motors'], firmata)
         except Exception as e:
             if isinstance(e, KeyError):
                 self.logger.error(f"Could not determine motor connection type '{self.type}'")
@@ -37,7 +37,7 @@ class MotorHandler:
         # Log loaded type
         self.logger.info(f"Opening motor connection of type '{self.paddle_type}'")
         try:
-            self.paddle_connection = self.pm.wrappers[self.paddle_type](config['paddles'])
+            self.paddle_connection = self.pm.wrappers[self.paddle_type](config['paddles'], firmata)
         except Exception as e:
             if isinstance(e, KeyError):
                 self.logger.error(f"Could not determine motor connection type '{self.paddle_type}'")

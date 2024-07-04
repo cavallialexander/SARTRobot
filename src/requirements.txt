@@ -10,3 +10,4 @@ smbus2
 multiprocessing-logging
 seeed-python-mlx9064x
 PyRoboteq
+pyfirmata

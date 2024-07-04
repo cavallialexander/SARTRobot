@@ -19,7 +19,7 @@ from plugin_system import PluginManager
 
 
 class SensorStream(WebSocketProcess):
-    def __init__(self, mpid, pipe, config_file, init_msgs=None):
+    def __init__(self, mpid, pipe, config_file, init_msgs=None, firmata=None):
         WebSocketProcess.__init__(self, mpid, pipe, config_file, 5556)
         # Setup logger
         self.logger = logging.getLogger(__name__)
@@ -40,7 +40,7 @@ class SensorStream(WebSocketProcess):
             if sensor_config.get('enabled', False):
                 # Find the appropriate wrapper class and create the sensor object
                 type_ = sensor_config['type']
-                sensor = self.pm.wrappers[type_](sensor_config)
+                sensor = self.pm.wrappers[type_](sensor_config, firmata)
                 # Count the number of times we create a sensor of this type, to assign a unique id
                 if type_ not in self.sensor_count:
                     self.sensor_count[type_] = 1

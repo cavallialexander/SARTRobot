@@ -21,13 +21,13 @@ FLAG_ARM = "ARM_MODE_FLAG"
 
 
 class ControlReceiver(WebSocketProcess):
-    def __init__(self, mpid, pipe, config_file):
+    def __init__(self, mpid, pipe, config_file, firmata=None):
         WebSocketProcess.__init__(self, mpid, pipe, config_file, 5555)
         # Setup logger
         self.logger = logging.getLogger(__name__)
         # Create MotorHandler object to handle motors
-        self.motors: MotorHandler = MotorHandler(self.config)
-        self.servos: ServoHandler = ServoHandler(self.config, pipe)
+        self.motors: MotorHandler = MotorHandler(self.config, firmata)
+        self.servos: ServoHandler = ServoHandler(self.config, pipe, firmata)
         # When script exits or is interrupted stop all motors
         atexit.register(self.motors.close)
         atexit.register(self.servos.close)

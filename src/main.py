@@ -2,6 +2,7 @@
 from multiprocessing import Pipe
 from control_receiver import ControlReceiver
 from sensor_stream import SensorStream
+from SerialFirmata import Leonardo
 import signal
 import sys
 import os
@@ -37,11 +38,19 @@ class Manager:
         # Log process ID to file
         self.logger.debug(f"Process ID (PID): {os.getpid()}")
         # Create pipe. sensor_pipe receives, and control_pipe sends
+        self.firmata = None
         self.sensor_pipe, self.control_pipe = Pipe(duplex=False)
+        try:
+            firmataConf = config["firmata"]
+            self.firmata = Leonardo(firmataConf["port"], baudrate=firmataConf["baudrate"], timeout=5)
+        except:
+            self.logger.warning("No Firmata config found or it could not be connected to")
+            self.firmata = None
+
         # Create server and receiver processes
-        self.control_process = ControlReceiver(2, self.control_pipe, self.config_file)
+        self.control_process = ControlReceiver(2, self.control_pipe, self.config_file, self.firmata)
         self.sensor_process = SensorStream(1, self.sensor_pipe, self.config_file,
-                                           self.control_process.get_initial_messages())
+                                           self.control_process.get_initial_messages(), self.firmata)
         # Setup signal handlers
         signal.signal(signal.SIGINT, self.sigint)
         # Start new processes

@@ -1,5 +1,6 @@
 import logging
 
+
 class ServoModel:
     def __init__(self, channel, speed, neutral, pos=0, part=None):
         self.channel = channel
@@ -8,10 +9,12 @@ class ServoModel:
         self.pos = pos
         self.part = part
 
+
 class ServoWrapper:
-    def __init__(self, config):
+    def __init__(self, config, firmata=None):
         # Setup logger
         self.logger = logging.getLogger(__name__)
+        self.firmata = firmata
 
     def create_servo_model(self, channel, config, part=None):
         pass
