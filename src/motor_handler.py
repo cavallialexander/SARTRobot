@@ -21,7 +21,7 @@ class MotorHandler:
         self.logger.info(f"Opening motor connection of type '{self.type}'")
         # Create motor connection (from a list loaded by the plugin manager) using class specified in the config
         try:
-            self.connection = self.pm.wrappers[self.type](config['motors'], firmata)
+            self.connection = self.pm.wrappers[self.type](config['motors'], firmata=firmata)
         except Exception as e:
             if isinstance(e, KeyError):
                 self.logger.error(f"Could not determine motor connection type '{self.type}'")
@@ -37,7 +37,7 @@ class MotorHandler:
         # Log loaded type
         self.logger.info(f"Opening motor connection of type '{self.paddle_type}'")
         try:
-            self.paddle_connection = self.pm.wrappers[self.paddle_type](config['paddles'], firmata)
+            self.paddle_connection = self.pm.wrappers[self.paddle_type](config['paddles'], firmata=firmata)
         except Exception as e:
             if isinstance(e, KeyError):
                 self.logger.error(f"Could not determine motor connection type '{self.paddle_type}'")
