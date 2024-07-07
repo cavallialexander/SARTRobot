@@ -8,7 +8,7 @@
 	"motors": {
 		"type": "simpleserialfirmata",
 		"baudrate": 9600,
-		"port": "HW_SERIAL0",
+		"port": "HW_SERIAL1",
 		"tx": 1,
 		"rx": 0,
 		"ids": {
