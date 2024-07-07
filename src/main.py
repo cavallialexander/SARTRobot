@@ -41,7 +41,9 @@ class Manager:
         self.firmata = None
         self.sensor_pipe, self.control_pipe = Pipe(duplex=False)
         try:
+            self.logger.log("Initialising Firmata")
             firmataConf = config['firmata']
+            self.logger.log("Got Firmata conf")
             self.logger.log("Firmata Conf", firmataConf)
             self.firmata = Leonardo(firmataConf['port'], baudrate=firmataConf['baudrate'], timeout=5)
         except:
