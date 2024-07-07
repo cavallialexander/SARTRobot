@@ -71,6 +71,8 @@ class SimpleSerialConnection(MotorWrapper):
         except AttributeError:
             self.channels['left'] = 1
             self.channels['right'] = 0
+        
+        self.logger.info("Finish init")
 
     def move_raw(self, left=None, right=None):
         # Left side
