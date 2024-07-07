@@ -44,8 +44,8 @@ class Manager:
             self.logger.info("Initialising Firmata")
             firmataConf = config['firmata']
             self.logger.info("Got Firmata conf")
-            self.logger.info("Firmata Conf", firmataConf)
-            self.firmata = Leonardo(firmataConf['port'], baudrate=firmataConf['baudrate'], timeout=5)
+            self.logger.info(firmataConf)
+            self.firmata = Leonardo(firmataConf['port'], baudrate=int(firmataConf['baudrate']), timeout=5)
         except:
             self.logger.warning("No Firmata config found or it could not be connected to")
             self.firmata = None
