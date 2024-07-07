@@ -16,7 +16,6 @@ import sys
 import inspect
 import time
 from plugin_system import PluginManager
-from SerialFirmata import Leonardo
 
 
 class SensorStream(WebSocketProcess):
@@ -24,18 +23,6 @@ class SensorStream(WebSocketProcess):
         WebSocketProcess.__init__(self, mpid, pipe, config_file, 5556)
         # Setup logger
         self.logger = logging.getLogger(__name__)
-
-        self.firmata = None
-        # try:
-        #     self.logger.info("Initialising Firmata - sensor")
-        #     firmataConf = self.config['firmata']
-        #     self.logger.info("Got Firmata conf")
-        #     self.logger.info(firmataConf)
-        #     self.firmata = Leonardo(firmataConf['port'], baudrate=int(firmataConf['baudrate']), timeout=5)
-        # except Exception as error:
-        #     self.logger.warning("No Firmata config found or it could not be connected to")
-        #     self.logger.warning(error)
-        #     self.firmata = None
 
         # Create new plugin manager looking for subclasses of SensorWrapper in "src/sensors/"
         self.pm = PluginManager(SensorWrapper, os.getcwd() + "/src/sensors")
@@ -53,7 +40,7 @@ class SensorStream(WebSocketProcess):
             if sensor_config.get('enabled', False):
                 # Find the appropriate wrapper class and create the sensor object
                 type_ = sensor_config['type']
-                sensor = self.pm.wrappers[type_](sensor_config, firmata=self.firmata)
+                sensor = self.pm.wrappers[type_](sensor_config)
                 # Count the number of times we create a sensor of this type, to assign a unique id
                 if type_ not in self.sensor_count:
                     self.sensor_count[type_] = 1

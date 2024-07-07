@@ -2,7 +2,6 @@
 #based off of code by aakmsk at https://github.com/aakmsk/serial_bus_servo_controller_python_module
 import serial
 import time
-from SerialFirmata import Leonardo, HW_SERIAL1
 
 FRAME_HEADER         =0x55
 MOVE_TIME_WRITE      =1

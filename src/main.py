@@ -2,7 +2,6 @@
 from multiprocessing import Pipe
 from control_receiver import ControlReceiver
 from sensor_stream import SensorStream
-from SerialFirmata import Leonardo
 import signal
 import sys
 import os

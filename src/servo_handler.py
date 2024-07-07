@@ -29,7 +29,7 @@ class ServoHandler:
         try:
             # Create servo connection (from a list loaded by the plugin manager) using
             # class specified in the config
-            self.connection: ServoWrapper = self.pm.wrappers[self.type](config['servos'], firmata)
+            self.connection: ServoWrapper = self.pm.wrappers[self.type](config['servos'])
         except Exception as e:
             if isinstance(e, KeyError):
                 self.logger.error(f"Could not determine servo connection type "

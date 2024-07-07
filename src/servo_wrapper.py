@@ -11,10 +11,9 @@ class ServoModel:
 
 
 class ServoWrapper:
-    def __init__(self, config, firmata=None):
+    def __init__(self, config):
         # Setup logger
         self.logger = logging.getLogger(__name__)
-        self.firmata = firmata
 
     def create_servo_model(self, channel, config, part=None):
         pass

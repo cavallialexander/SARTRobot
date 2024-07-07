@@ -10,7 +10,7 @@ import json
 import math
 import atexit
 import logging
-from SerialFirmata import Leonardo
+
 
 class ARM_MODES:
     SHOULDER = 1
@@ -46,6 +46,7 @@ class ControlReceiver(WebSocketProcess):
             "LEFT_TOP_SHOULDER": False,
             "RIGHT_TOP_SHOULDER": False,
         }
+        self.arm = ArmServos(self.config['arm'])
 
 
     def gamepad_movement_handler(self, type="TRIGGER"):
