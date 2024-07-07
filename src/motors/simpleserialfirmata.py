@@ -52,6 +52,7 @@ class SimpleSerialConnection(MotorWrapper):
             self.logger.info("Got Firmata conf")
             self.logger.info(firmataConf)
             self.firmata = Leonardo(firmataConf['port'], baudrate=firmataConf['baudrate'], timeout=5)
+            self.logger.info("Firmata created")
         except Exception as error:
             self.logger.error("No Firmata config found or it could not be connected to")
             self.logger.error(error)
@@ -63,7 +64,9 @@ class SimpleSerialConnection(MotorWrapper):
         self.baudrate = config.get('baudrate')
         self.tx = config.get('tx')
         self.rx = config.get('rx')
+        self.logger.info("Setup Firmata Serial connection to sabertooths")
         self.firmata.serialConfig(self.port, self.baudrate, self.rx, self.tx)
+        self.logger.info("Finish Firmata Serial connection to sabertooths")
         self.channels = config.get('channels')
         try:
             self.channels.get('left')
