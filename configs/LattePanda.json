@@ -6,7 +6,7 @@
 		"default_speed": 3
 	},
 	"firmata": {
-		"port": "/dev/ttyAMC0",
+		"port": "/dev/ttyACM0",
 		"baudrate": 57600
 	},
 	"motors": {
