@@ -28,7 +28,7 @@ class SensorStream(WebSocketProcess):
         self.firmata = None
         try:
             self.logger.info("Initialising Firmata - sensor")
-            firmataConf = config_file['firmata']
+            firmataConf = self.config['firmata']
             self.logger.info("Got Firmata conf")
             self.logger.info(firmataConf)
             self.firmata = Leonardo(firmataConf['port'], baudrate=int(firmataConf['baudrate']), timeout=5)
