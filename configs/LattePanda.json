@@ -36,7 +36,25 @@
 		}
 	},
 	"servos": {
-		"type": "virtual"
+		"type": "maestro",
+		"instances": {
+			"0": {
+				"speed": 0.17,
+				"neutral": 0
+			},
+			"1": {
+				"speed": 0.17,
+				"neutral": "0"
+			},
+			"2": {
+				"speed": 0.17,
+				"neutral": 0
+			},
+			"3": {
+				"speed": 0.17,
+				"neutral": 0
+			}
+		}
 	},
 	"arm": {
 		"shoulder": "0",
