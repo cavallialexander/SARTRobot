@@ -32,6 +32,13 @@ from motor_wrapper import MotorWrapper
 import serial
 import logging
 
+def string_to_port(string):
+    if string.startswith("HW"):
+        return int(string[-1])
+    elif string.startswith("SW"):
+        return int(string[-1]) + 8
+    else:
+        raise Exception("Firmata Serial Port out of range")
 
 class SimpleSerialConnection(MotorWrapper):
     # What type of motor this wrapper handles
@@ -41,7 +48,7 @@ class SimpleSerialConnection(MotorWrapper):
         MotorWrapper.__init__(self, config, kwargs.get("firmata", None))
         if self.firmata is None:
             raise Exception("no firmata provided")
-        self.port = config.get('port')
+        self.port = string_to_port(config.get('port'))
         self.baudrate = config.get('baudrate')
         self.tx = config.get('tx')
         self.rx = config.get('rx')
