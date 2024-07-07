@@ -65,7 +65,7 @@ class SimpleSerialConnection(MotorWrapper):
         self.tx = config.get('tx')
         self.rx = config.get('rx')
         self.logger.info("Setup Firmata Serial connection to sabertooths")
-        self.logger.info("port: % baudrate: % rx: % tx: %", self.port, self.baudrate, self.rx, self.tx)
+        self.logger.info("port: %s baudrate: %d rx: %d tx: %d", self.port, self.baudrate, self.rx, self.tx)
         self.firmata.serialConfig(self.port, self.baudrate, self.rx, self.tx)
         self.logger.info("Finish Firmata Serial connection to sabertooths")
         self.channels = config.get('channels')
