@@ -11,9 +11,9 @@
 		"port": "HW_SERIAL1",
 		"tx": 1,
 		"rx": 0,
-		"ids": {
-			"left": [],
-			"right": []
+		"channels": {
+			"left": 1,
+			"right": 0
 		},
 		"firmata": {
 			"port": "/dev/ttyACM0",
@@ -26,9 +26,9 @@
 		"baudrate": 9600,
 		"tx": 10,
 		"rx": 11,
-		"ids": {
-			"left": [],
-			"right": []
+		"channels": {
+			"left": 0,
+			"right": 1
 		},
 		"firmata": {
 			"port": "/dev/ttyACM0",
