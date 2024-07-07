@@ -46,8 +46,9 @@ class Manager:
             self.logger.info("Got Firmata conf")
             self.logger.info(firmataConf)
             self.firmata = Leonardo(firmataConf['port'], baudrate=int(firmataConf['baudrate']), timeout=5)
-        except:
+        except e:
             self.logger.warning("No Firmata config found or it could not be connected to")
+            self.logger.warning(e)
             self.firmata = None
 
         # Create server and receiver processes
