@@ -37,8 +37,8 @@ class SimpleSerialConnection(MotorWrapper):
     # What type of motor this wrapper handles
     type_ = 'simpleserialfirmata'
 
-    def __init__(self, config, firmata=None, **kwargs):
-        MotorWrapper.__init__(self, config, firmata)
+    def __init__(self, config, **kwargs):
+        MotorWrapper.__init__(self, config, kwargs.get("firmata", None))
         if self.firmata is None:
             raise Exception("no firmata provided")
         self.port = config.get('port')
