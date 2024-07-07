@@ -5,10 +5,6 @@
 	"control": {
 		"default_speed": 3
 	},
-	"firmata": {
-		"port": "/dev/ttyACM0",
-		"baudrate": 57600
-	},
 	"motors": {
 		"type": "simpleserialfirmata",
 		"baudrate": 9600,
@@ -18,6 +14,10 @@
 		"ids": {
 			"left": [],
 			"right": []
+		},
+		"firmata": {
+			"port": "/dev/ttyACM0",
+			"baudrate": 57600
 		}
 	},
 	"paddles": {
@@ -29,6 +29,10 @@
 		"ids": {
 			"left": [],
 			"right": []
+		},
+		"firmata": {
+			"port": "/dev/ttyACM0",
+			"baudrate": 57600
 		}
 	},
 	"servos": {

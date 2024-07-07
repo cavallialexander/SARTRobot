@@ -51,13 +51,14 @@ class SimpleSerialConnection(MotorWrapper):
             firmataConf = config['firmata']
             self.logger.info("Got Firmata conf")
             self.logger.info(firmataConf)
-            self.firmata = Leonardo(firmataConf['port'], baudrate=int(firmataConf['baudrate']), timeout=5)
+            self.firmata = Leonardo(firmataConf['port'], baudrate=firmataConf['baudrate'], timeout=5)
         except Exception as error:
             self.logger.error("No Firmata config found or it could not be connected to")
             self.logger.error(error)
 
         if self.firmata is None:
             raise Exception("no firmata provided")
+
         self.port = string_to_port(config.get('port'))
         self.baudrate = config.get('baudrate')
         self.tx = config.get('tx')
