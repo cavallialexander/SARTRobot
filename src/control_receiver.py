@@ -10,6 +10,7 @@ import json
 import math
 import atexit
 import logging
+from SerialFirmata import Leonardo
 
 class ARM_MODES:
     SHOULDER = 1
@@ -21,13 +22,27 @@ FLAG_ARM = "ARM_MODE_FLAG"
 
 
 class ControlReceiver(WebSocketProcess):
-    def __init__(self, mpid, pipe, config_file, firmata=None):
+    def __init__(self, mpid, pipe, config_file):
         WebSocketProcess.__init__(self, mpid, pipe, config_file, 5555)
         # Setup logger
         self.logger = logging.getLogger(__name__)
+
+        self.firmata = None
+        try:
+            self.logger.info("Initialising Firmata")
+            firmataConf = config_file['firmata']
+            self.logger.info("Got Firmata conf")
+            self.logger.info(firmataConf)
+            self.firmata = Leonardo(firmataConf['port'], baudrate=int(firmataConf['baudrate']), timeout=5)
+        except Exception as error:
+            self.logger.warning("No Firmata config found or it could not be connected to")
+            self.logger.warning(error)
+            self.firmata = None
+
+
         # Create MotorHandler object to handle motors
-        self.motors: MotorHandler = MotorHandler(self.config, firmata)
-        self.servos: ServoHandler = ServoHandler(self.config, pipe, firmata)
+        self.motors: MotorHandler = MotorHandler(self.config, self.firmata)
+        self.servos: ServoHandler = ServoHandler(self.config, pipe, self.firmata)
         # When script exits or is interrupted stop all motors
         atexit.register(self.motors.close)
         atexit.register(self.servos.close)
