@@ -6,12 +6,26 @@ import traceback
 from plugin_system import PluginManager
 from motor_wrapper import MotorWrapper
 from motors.virtual import VirtualConnection
+from SerialFirmata import Leonardo
 
 
 class MotorHandler:
-    def __init__(self, config, firmata=None):
+    def __init__(self, config):
         # Setup logger
         self.logger = logging.getLogger(__name__)
+
+        self.firmata = None
+        try:
+            self.logger.info("Initialising Firmata")
+            firmataConf = config['firmata']
+            self.logger.info("Got Firmata conf")
+            self.logger.info(firmataConf)
+            self.firmata = Leonardo(firmataConf['port'], baudrate=int(firmataConf['baudrate']), timeout=5)
+        except Exception as error:
+            self.logger.warning("No Firmata config found or it could not be connected to")
+            self.logger.warning(error)
+            self.firmata = None
+
         # Create new plugin manager looking for subclasses of MotorWrapper in "src/motors/"
         self.pm = PluginManager(MotorWrapper, os.getcwd() + "/src/motors")
         # Load values from configuration file
@@ -21,7 +35,7 @@ class MotorHandler:
         self.logger.info(f"Opening motor connection of type '{self.type}'")
         # Create motor connection (from a list loaded by the plugin manager) using class specified in the config
         try:
-            self.connection = self.pm.wrappers[self.type](config['motors'], firmata=firmata)
+            self.connection = self.pm.wrappers[self.type](config['motors'], firmata=self.firmata)
         except Exception as e:
             if isinstance(e, KeyError):
                 self.logger.error(f"Could not determine motor connection type '{self.type}'")
@@ -37,7 +51,7 @@ class MotorHandler:
         # Log loaded type
         self.logger.info(f"Opening motor connection of type '{self.paddle_type}'")
         try:
-            self.paddle_connection = self.pm.wrappers[self.paddle_type](config['paddles'], firmata=firmata)
+            self.paddle_connection = self.pm.wrappers[self.paddle_type](config['paddles'], firmata=self.firmata)
         except Exception as e:
             if isinstance(e, KeyError):
                 self.logger.error(f"Could not determine motor connection type '{self.paddle_type}'")

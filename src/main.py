@@ -38,23 +38,12 @@ class Manager:
         # Log process ID to file
         self.logger.debug(f"Process ID (PID): {os.getpid()}")
         # Create pipe. sensor_pipe receives, and control_pipe sends
-        self.firmata = None
         self.sensor_pipe, self.control_pipe = Pipe(duplex=False)
-        try:
-            self.logger.info("Initialising Firmata")
-            firmataConf = config['firmata']
-            self.logger.info("Got Firmata conf")
-            self.logger.info(firmataConf)
-            self.firmata = Leonardo(firmataConf['port'], baudrate=int(firmataConf['baudrate']), timeout=5)
-        except Exception as error:
-            self.logger.warning("No Firmata config found or it could not be connected to")
-            self.logger.warning(error)
-            self.firmata = None
 
         # Create server and receiver processes
-        self.control_process = ControlReceiver(2, self.control_pipe, self.config_file, self.firmata)
+        self.control_process = ControlReceiver(2, self.control_pipe, self.config_file)
         self.sensor_process = SensorStream(1, self.sensor_pipe, self.config_file,
-                                           self.control_process.get_initial_messages(), self.firmata)
+                                           self.control_process.get_initial_messages())
         # Setup signal handlers
         signal.signal(signal.SIGINT, self.sigint)
         # Start new processes
