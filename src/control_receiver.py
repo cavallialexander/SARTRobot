@@ -27,22 +27,10 @@ class ControlReceiver(WebSocketProcess):
         # Setup logger
         self.logger = logging.getLogger(__name__)
 
-        self.firmata = None
-        try:
-            self.logger.info("Initialising Firmata")
-            firmataConf = self.config['firmata']
-            self.logger.info("Got Firmata conf")
-            self.logger.info(firmataConf)
-            self.firmata = Leonardo(firmataConf['port'], baudrate=int(firmataConf['baudrate']), timeout=5)
-        except Exception as error:
-            self.logger.warning("No Firmata config found or it could not be connected to")
-            self.logger.warning(error)
-            self.firmata = None
-
 
         # Create MotorHandler object to handle motors
-        self.motors: MotorHandler = MotorHandler(self.config, self.firmata)
-        self.servos: ServoHandler = ServoHandler(self.config, pipe, self.firmata)
+        self.motors: MotorHandler = MotorHandler(self.config)
+        self.servos: ServoHandler = ServoHandler(self.config, pipe)
         # When script exits or is interrupted stop all motors
         atexit.register(self.motors.close)
         atexit.register(self.servos.close)

@@ -26,16 +26,16 @@ class SensorStream(WebSocketProcess):
         self.logger = logging.getLogger(__name__)
 
         self.firmata = None
-        try:
-            self.logger.info("Initialising Firmata - sensor")
-            firmataConf = self.config['firmata']
-            self.logger.info("Got Firmata conf")
-            self.logger.info(firmataConf)
-            self.firmata = Leonardo(firmataConf['port'], baudrate=int(firmataConf['baudrate']), timeout=5)
-        except Exception as error:
-            self.logger.warning("No Firmata config found or it could not be connected to")
-            self.logger.warning(error)
-            self.firmata = None
+        # try:
+        #     self.logger.info("Initialising Firmata - sensor")
+        #     firmataConf = self.config['firmata']
+        #     self.logger.info("Got Firmata conf")
+        #     self.logger.info(firmataConf)
+        #     self.firmata = Leonardo(firmataConf['port'], baudrate=int(firmataConf['baudrate']), timeout=5)
+        # except Exception as error:
+        #     self.logger.warning("No Firmata config found or it could not be connected to")
+        #     self.logger.warning(error)
+        #     self.firmata = None
 
         # Create new plugin manager looking for subclasses of SensorWrapper in "src/sensors/"
         self.pm = PluginManager(SensorWrapper, os.getcwd() + "/src/sensors")
