@@ -81,15 +81,13 @@ class SimpleSerialConnection(MotorWrapper):
     def move_raw(self, left=None, right=None):
         # Left side
         if left is not None:
-            offset = 64 if left > 0 else 0
-            channel = self.channels.get('left') * 128
-            msg = offset + channel + abs(round(62 / 1000 * left))
+            offset = 64  # if left > 0 else 0
+            msg = offset + (round(62 / 1000 * left))
             self.firmata.serialWriteRaw(self.port, bytes([msg]))
         # Right side
         if right is not None:
-            offset = 64 if right > 0 else 0
-            channel = self.channels.get('right') * 128
-            msg = offset + channel + abs(round(62 / 1000 * right))
+            offset = 64  # if right > 0 else 0
+            msg = offset + 128 + (round(62 / 1000 * right))
             self.firmata.serialWriteRaw(self.port, bytes([msg]))
 
     def stop(self):
