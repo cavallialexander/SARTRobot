@@ -47,13 +47,45 @@
       "tx": 9,
       "rx": 10
     },
-    "ids": [1, 2, 3, 4, 5]
+    "ids": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
   },
   "arm": {
-    "shoulder": "0",
-    "elbow": "1",
-    "wrist": "2",
-    "gripper": "3"
+    "shoulder": {
+      "id": 1,
+      "home": 0,
+      "drive": 0,
+      "explore": 0
+    },
+    "elbow": {
+      "id": 2,
+      "home": 175,
+      "drive": 0,
+      "explore": 0
+    },
+    "wristud": {
+      "id": 3,
+      "home": 570,
+      "drive": 0,
+      "explore": 0
+    },
+    "wristlr": {
+      "id": 4,
+      "home": 1000,
+      "drive": 0,
+      "explore": 0
+    },
+    "claw": {
+      "id": 5,
+      "home": 1000,
+      "drive": 0,
+      "explore": 0
+    }
   },
   "interface": {
     "notifications": {
