@@ -25,9 +25,9 @@ class HiWonderConnection(ServoWrapper):
             raise Exception("no firmata provided")
 
         self.port = string_to_port(config.get('port'))
-        self.baudrate = string_to_port(config.get('baudrate'))
-        self.tx = string_to_port(config.get('tx'))
-        self.rx = string_to_port(config.get('rx'))
+        self.baudrate = config.get('baudrate')
+        self.tx = config.get('tx')
+        self.rx = config.get('rx')
         self.firmata.serialConfig(self.port, self.baudrate, self.rx, self.tx)
         self.controller = HiWonder.SBS_Controller(self.firmata, self.port)
 
