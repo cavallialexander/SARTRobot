@@ -47,7 +47,7 @@ class ServoHandler:
             self.type = 'virtual'
         self.logger.info(f"Debug message 3")
         # Ensure Connection class has access to logging capabilities
-        self.connection.logger = self.logger
+        # self.connection.logger = self.logger
         self.Servos = {}
         self.logger.info(f"Debug message 4")
         for _id in config['servos']['ids']:
