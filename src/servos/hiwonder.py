@@ -38,7 +38,7 @@ class HiWonderConnection(ServoWrapper):
     def go_to(self, channel, pos, time=None):
         safe_pos = min(1000, max(0, pos))
         self.logger.info(f"Trying to moving channel {channel} to position {safe_pos}")
-        self.controller.cmd_servo_move(channel, safe_pos, 1000 if time is None else time)
+        self.controller.cmd_servo_move([channel], [safe_pos], 1000)
         return safe_pos
 
     def stop(self, channel=None):

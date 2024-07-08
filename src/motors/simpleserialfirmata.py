@@ -31,6 +31,7 @@
 from motor_wrapper import MotorWrapper
 from SerialFirmata import Leonardo, string_to_port
 
+
 class SimpleSerialConnection(MotorWrapper):
     # What type of motor this wrapper handles
     type_ = 'simpleserialfirmata'
