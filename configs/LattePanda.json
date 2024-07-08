@@ -65,7 +65,8 @@
         "id": 1
       },
       "back": {
-        "enabled": false
+        "enabled": true,
+        "id": 3
       },
       "left": {
         "enabled": false
