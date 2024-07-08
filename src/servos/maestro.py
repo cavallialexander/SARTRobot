@@ -1,7 +1,7 @@
 from servo_wrapper import ServoWrapper, ServoModel
 import maestromaster.maestro as mae
 import logging
-import time
+import time as time_lib
 
 class MaestroConnection(ServoWrapper):
     type_ = 'maestro'
@@ -44,12 +44,12 @@ class MaestroConnection(ServoWrapper):
         self.logger.info("Finishing creating a servo model")
         return sm
 
-    def go_to(self, channel, pos):
+    def go_to(self, channel, pos, time=None):
         self.logger.info(f"Trying to moving channel {channel} to position {pos}")
         self.Controller.setTarget(channel, pos)
         x = self.Controller.getPosition(channel)
-        t = time.perf_counter()
-        while x != pos and time.perf_counter()-t < 5:
+        t = time_lib.perf_counter()
+        while x != pos and time_lib.perf_counter()-t < 5:
             x = self.Controller.getPosition(channel)
             # self.logger.info(f"Current pos for channel {channel} is {x}")
         self.logger.info(f"Finished moving channel {channel} to position {pos}")
@@ -58,8 +58,7 @@ class MaestroConnection(ServoWrapper):
         self.logger.info(f"Trying to moving channel {channel} to position {pos}")
         self.Controller.setTarget(channel, pos)
 
-
-    def stop(self):
+    def stop(self, channel=None):
         pass
 
     def close(self):

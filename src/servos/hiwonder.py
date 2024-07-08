@@ -28,8 +28,11 @@ class HiWonderConnection(ServoWrapper):
         self.baudrate = config.get('baudrate')
         self.tx = config.get('tx')
         self.rx = config.get('rx')
+        self.logger.info("Configure serial")
         self.firmata.serialConfig(self.port, self.baudrate, self.rx, self.tx)
+        self.logger.info("Create controller created")
         self.controller = HiWonder.SBS_Controller(self.firmata, self.port)
+        self.logger.info("HiWonder Setup finished")
 
     def go_to(self, channel, pos, time=None):
         safe_pos = min(1000, max(0, pos))

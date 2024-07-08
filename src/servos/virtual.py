@@ -9,10 +9,10 @@ class VirtualConnection(ServoWrapper):
     def __init__(self, config):
         ServoWrapper.__init__(self, config)
 
-    def create_servo_model(self, channel, config, part=None):
-        return ServoModel(channel, config["speed"], config["neutral"], part=part)
+    # def create_servo_model(self, channel, config, part=None):
+    #     return ServoModel(channel, config["speed"], config["neutral"], part=part)
 
-    def go_to(self, channel, pos):
+    def go_to(self, channel, pos, time=None):
         pass
 
     def stop(self, channel=None):
