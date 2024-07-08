@@ -24,6 +24,7 @@ class HiWonderConnection(ServoWrapper):
         if self.firmata is None:
             raise Exception("no firmata provided")
 
+        self.logger.info("HiWonder config")
         self.port = string_to_port(config.get('port'))
         self.baudrate = config.get('baudrate')
         self.tx = config.get('tx')
