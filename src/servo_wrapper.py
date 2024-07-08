@@ -15,10 +15,7 @@ class ServoWrapper:
         # Setup logger
         self.logger = logging.getLogger(__name__)
 
-    def create_servo_model(self, channel, config, part=None):
-        pass
-
-    def go_to(self, channel, pos):
+    def go_to(self, channel, pos, time=None):
         pass
 
     def stop(self, channel=None):

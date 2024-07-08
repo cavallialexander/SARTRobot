@@ -46,8 +46,31 @@ class ControlReceiver(WebSocketProcess):
             "LEFT_TOP_SHOULDER": False,
             "RIGHT_TOP_SHOULDER": False,
         }
-        self.arm = ArmServos(self.config['arm'])
 
+    def numkey_handler(self, control, value):
+        if value == "UP":
+            return
+        if control == 'NUM1':
+            self.servos.go_to_pos(self.config["arm"]["elbow"], 4800)
+            self.servos.increment_angle(self.config["arm"]["shoulder"]["id"], True)
+        if control == 'NUM2':
+            self.servos.increment_angle(self.config["arm"]["elbow"], True)
+        if control == 'NUM3':
+            self.servos.increment_angle(self.config["arm"]["wristud"], False)
+        if control == 'NUM4':
+            self.servos.increment_angle(self.config["arm"]["shoulder"], False)
+        if control == 'NUM5':
+            self.servos.increment_angle(self.config["arm"]["elbow"], False)
+        if control == 'NUM6':
+            self.servos.increment_angle(self.config["arm"]["wristud"], True)
+        if control == 'NUM7':
+            self.servos.increment_angle(self.config["arm"]["wristlr"], False)
+        if control == 'NUM9':
+            self.servos.increment_angle(self.config["arm"]["wristlr"], True)
+        if control == 'NUM-':
+            self.servos.increment_angle(self.config["arm"]["claw"], False)
+        if control == 'NUM+':
+            self.servos.increment_angle(self.config["arm"]["claw"], True)
 
     def gamepad_movement_handler(self, type="TRIGGER"):
         if type == "TRIGGER":
@@ -117,48 +140,47 @@ class ControlReceiver(WebSocketProcess):
                 self.motors.move_paddle(-speed)
             else:
                 self.motors.stop_paddle()
-        elif control == "ENTER":
-            if value == "DOWN":
-                self.state["ARM"] = not self.state["ARM"]
         elif control == "HOME":
             if value == "DOWN":
                 self.logger.info("GOING HOME")
-                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 4800)
+                self.servos.go_to_pos(int(self.config["arm"]["elbow"]["id"]), int(self.config["arm"]["elbow"]["home"]))
                 self.logger.info("GOING HOME: 1")
-                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 3712)
+                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]["id"]), int(self.config["arm"]["shoulder"]["home"]))
                 self.logger.info("GOING HOME: 2")
-                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 3456)
+                self.servos.go_to_pos(int(self.config["arm"]["wristud"]["id"]), int(self.config["arm"]["wristud"]["home"]))
                 self.logger.info("GOING HOME: 3")
-                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3776)
+                self.servos.go_to_pos(int(self.config["arm"]["wristlr"]["id"]), int(self.config["arm"]["wristlr"]["home"]))
                 self.logger.info("GOING HOME: 4")
-                self.servos.go_to_pos(int(self.config["arm"]["gripper"]), 4112)
+                self.servos.go_to_pos(int(self.config["arm"]["claw"]["id"]), int(self.config["arm"]["claw"]["home"]))
                 self.logger.info("GOING HOME: 5")
         elif control == "MAPPING":
             if value == "DOWN":
-                self.logger.info("GOING MAPPING")
-                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 4800)
-                self.logger.info("GOING MAPPING: 1")
-                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 3724)
-                self.logger.info("GOING MAPPING: 2")
-                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 5960)
-                self.logger.info("GOING MAPPING: 3")
-                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3820)
-                self.logger.info("GOING MAPPING: 4")
-                self.servos.go_to_pos(int(self.config["arm"]["gripper"]), 4112)
-                self.logger.info("GOING MAPPING: 5")
+                self.logger.info("GOING drive")
+                self.servos.go_to_pos(int(self.config["arm"]["elbow"]["id"]), int(self.config["arm"]["elbow"]["drive"]))
+                self.logger.info("GOING drive: 1")
+                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]["id"]), int(self.config["arm"]["shoulder"]["drive"]))
+                self.logger.info("GOING drive: 2")
+                self.servos.go_to_pos(int(self.config["arm"]["wristud"]["id"]), int(self.config["arm"]["wristud"]["drive"]))
+                self.logger.info("GOING drive: 3")
+                self.servos.go_to_pos(int(self.config["arm"]["wristlr"]["id"]), int(self.config["arm"]["wristlr"]["drive"]))
+                self.logger.info("GOING drive: 4")
+                self.servos.go_to_pos(int(self.config["arm"]["claw"]["id"]), int(self.config["arm"]["claw"]["drive"]))
+                self.logger.info("GOING drive: 5")
         elif control == "RUNNING":
             if value == "DOWN":
-                self.logger.info("GOING EXPLORING")
-                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 4800)
-                self.logger.info("GOING EXPLORING (but with the camera and without mapping): 1")
-                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 5600)
-                self.logger.info("GOING EXPLORING (but with the camera and without mapping): 2")
-                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 3712)
-                self.logger.info("GOING EXPLORING (but with the camera and without mapping): 3")
-                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3776)
-                self.logger.info("GOING EXPLORING (but with the camera and without mapping): 4")
-                self.servos.go_to_pos(int(self.config["arm"]["gripper"]), 4112)
-                self.logger.info("GOING EXPLORING (but with the camera and without mapping): 5")
+                self.logger.info("GOING explore")
+                self.servos.go_to_pos(int(self.config["arm"]["elbow"]["id"]), int(self.config["arm"]["elbow"]["explore"]))
+                self.logger.info("GOING explore: 1")
+                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]["id"]), int(self.config["arm"]["shoulder"]["explore"]))
+                self.logger.info("GOING explore: 2")
+                self.servos.go_to_pos(int(self.config["arm"]["wristud"]["id"]), int(self.config["arm"]["wristud"]["explore"]))
+                self.logger.info("GOING explore: 3")
+                self.servos.go_to_pos(int(self.config["arm"]["wristlr"]["id"]), int(self.config["arm"]["wristlr"]["explore"]))
+                self.logger.info("GOING explore: 4")
+                self.servos.go_to_pos(int(self.config["arm"]["claw"]["id"]), int(self.config["arm"]["claw"]["explore"]))
+                self.logger.info("GOING explore: 5")
+        elif "NUM" in control:
+            self.numkey_handler(control, value)
 
     def message_handler(self, buf):
         # Load object from JSON
@@ -171,10 +193,10 @@ class ControlReceiver(WebSocketProcess):
             value = msg["value"] if "value" in msg else False  # UP, DOWN
             # Handle directional movement etc
             self.keyboard_handler(control, value)
-        elif typ == "SLIDER":
-            value = int(msg["value"])
-            self.logger.info("Slider value type is {}".format(type(value)))
-            self.servos.go_to_pos_async(int(self.config["arm"][control]), value)
+        # elif typ == "SLIDER":
+        #     value = int(msg["value"])
+        #     self.logger.info("Slider value type is {}".format(type(value)))
+        #     self.servos.go_to_pos_async(int(self.config["arm"][control]), value)
         elif typ == "BUTTON":
             value = msg["value"]  # UP, DOWN
             # Store in state, because it might be useful (e.g. for modifiers)

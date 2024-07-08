@@ -29,15 +29,7 @@
 # +---------+-----------+---+---+---+---+---+---+---------+----------------------------+
 
 from motor_wrapper import MotorWrapper
-from SerialFirmata import Leonardo
-
-def string_to_port(string):
-    if string.startswith("HW"):
-        return int(string[-1])
-    elif string.startswith("SW"):
-        return int(string[-1]) + 8
-    else:
-        raise Exception("Firmata Serial Port out of range")
+from SerialFirmata import Leonardo, string_to_port
 
 class SimpleSerialConnection(MotorWrapper):
     # What type of motor this wrapper handles

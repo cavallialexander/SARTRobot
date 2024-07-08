@@ -2,6 +2,7 @@
 #based off of code by aakmsk at https://github.com/aakmsk/serial_bus_servo_controller_python_module
 import serial
 import time
+from SerialFirmata import SerialBoard
 
 FRAME_HEADER         =0x55
 MOVE_TIME_WRITE      =1
@@ -34,8 +35,7 @@ LED_ERROR_WRITE      =35
 LED_ERROR_READ       =36
 
 class SBS_Controller:
-    def __init__(self, arduino, port):
-        
+    def __init__(self, arduino: SerialBoard, port):
         self.arduino = arduino
         self.port = port
 

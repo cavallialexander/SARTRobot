@@ -36,6 +36,15 @@ END_SYSEX = 0xF7
 SERIAL_READ_CONTINUOSLY = 0x00
 SERIAL_STOP_READING = 0x01
 
+
+def string_to_port(string):
+    if string.startswith("HW"):
+        return int(string[-1])
+    elif string.startswith("SW"):
+        return int(string[-1]) + 8
+    else:
+        raise Exception("Firmata Serial Port out of range")
+
 class InvalidPortError(Exception):
 	pass
 	

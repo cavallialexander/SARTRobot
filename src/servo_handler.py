@@ -14,6 +14,9 @@ from servos.virtual import VirtualConnection
 from typing import List, Optional
 
 
+_INCREMENT = 10
+
+
 class ServoHandler:
     def __init__(self, config, pipe, firmata=None):
         # Setup logger
@@ -29,7 +32,7 @@ class ServoHandler:
         try:
             # Create servo connection (from a list loaded by the plugin manager) using
             # class specified in the config
-            self.connection: ServoWrapper = self.pm.wrappers[self.type](config['servos'])
+            self.connection: ServoWrapper = self.pm.wrappers[self.type](config['servos']['controller'])
         except Exception as e:
             if isinstance(e, KeyError):
                 self.logger.error(f"Could not determine servo connection type "
@@ -40,48 +43,36 @@ class ServoHandler:
                 traceback.print_exc()
             # Fall back to virtual connection common to all servo connection errors
             self.logger.warning("Falling back to virtual connection")
-            self.connection = VirtualConnection(config['servos'])
+            self.connection = VirtualConnection(config['servos']['controller'])
             self.type = 'virtual'
         self.logger.info(f"Debug message 3")
         # Ensure Connection class has access to logging capabilities
         self.connection.logger = self.logger
-        Servos = {}
+        self.Servos = {}
         self.logger.info(f"Debug message 4")
-        for servo, conf in config['servos']['instances'].items():
-            if servo in config['arm'].values():
-                part = [k for k, v in config['arm'].items() if v == servo][0]
-            else:
-                part = None
-            Servos[int(servo)] = self.connection.create_servo_model(int(servo), conf, part)
+        for _id in config['servos']['ids']:
+            self.Servos[_id] = 500
         self.logger.info(f"Debug message 5")
-        self.Servos = Servos
 
     def get_initial_messages(self):
         msg = []
-        for servo in [s for s in self.Servos.values() if s.part is not None]:
-            msg.append([servo.part, servo.pos])
+        for part, conf in self.config["servos"]["items"].entries():
+            msg.append([part, self.Servos[conf["id"]]])
         return {"SERVO_POS": msg}
 
-    
     def go_to_pos(self, channel, pos):
-        self.Servos[channel].pos = pos
-        self.connection.go_to(channel, pos)
-        if self.Servos[channel].part is not None:
-            self.logger.debug("Sending updated servo pos of {}".format(self.Servos[channel].part))
-            self.pipe.send(["SERVO_POS", self.Servos[channel].part, pos])
+        self.Servos[channel] = self.connection.go_to(channel, pos)
+        self.logger.debug("Sending updated servo pos of {}".format(self.Servos[channel]))
+        self.pipe.send(["SERVO_POS", self.Servos[channel], pos])
 
-    def go_to_pos_async(self, channel, pos):
-        self.Servos[channel].pos = pos
-        self.connection.go_to_async(channel, pos)
-        if self.Servos[channel].part is not None:
-            self.pipe.send(["SERVO_POS", self.Servos[channel].part, pos])
+    def increment_angle(self, channel, positive):
+        self.go_to_pos(channel, self.Servos[channel] + (_INCREMENT if positive else -_INCREMENT))
     
     def move(self, channel, speed):
         pass
     
     def stop(self):
         self.connection.stop()
-
 
     def close(self):
         self.logger.info("Closing servo connection")
