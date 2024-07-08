@@ -61,6 +61,7 @@ class ServoHandler:
         return {"SERVO_POS": msg}
 
     def go_to_pos(self, channel, pos):
+        self.logger.debug("Moving servo {} to {}".format(channel, pos))
         self.Servos[channel] = self.connection.go_to(channel, pos)
         self.logger.debug("Sending updated servo pos of {}".format(self.Servos[channel]))
         self.pipe.send(["SERVO_POS", self.Servos[channel], pos])

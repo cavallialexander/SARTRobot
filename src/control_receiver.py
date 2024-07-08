@@ -51,26 +51,25 @@ class ControlReceiver(WebSocketProcess):
         if value == "UP":
             return
         if control == 'NUM1':
-            self.servos.go_to_pos(self.config["arm"]["elbow"], 4800)
             self.servos.increment_angle(self.config["arm"]["shoulder"]["id"], True)
         if control == 'NUM2':
-            self.servos.increment_angle(self.config["arm"]["elbow"], True)
+            self.servos.increment_angle(self.config["arm"]["elbow"]["id"], True)
         if control == 'NUM3':
-            self.servos.increment_angle(self.config["arm"]["wristud"], False)
+            self.servos.increment_angle(self.config["arm"]["wristud"]["id"], False)
         if control == 'NUM4':
-            self.servos.increment_angle(self.config["arm"]["shoulder"], False)
+            self.servos.increment_angle(self.config["arm"]["shoulder"]["id"], False)
         if control == 'NUM5':
-            self.servos.increment_angle(self.config["arm"]["elbow"], False)
+            self.servos.increment_angle(self.config["arm"]["elbow"]["id"], False)
         if control == 'NUM6':
-            self.servos.increment_angle(self.config["arm"]["wristud"], True)
+            self.servos.increment_angle(self.config["arm"]["wristud"]["id"], True)
         if control == 'NUM7':
-            self.servos.increment_angle(self.config["arm"]["wristlr"], False)
+            self.servos.increment_angle(self.config["arm"]["wristlr"]["id"], False)
         if control == 'NUM9':
-            self.servos.increment_angle(self.config["arm"]["wristlr"], True)
+            self.servos.increment_angle(self.config["arm"]["wristlr"]["id"], True)
         if control == 'NUM-':
-            self.servos.increment_angle(self.config["arm"]["claw"], False)
+            self.servos.increment_angle(self.config["arm"]["claw"]["id"], False)
         if control == 'NUM+':
-            self.servos.increment_angle(self.config["arm"]["claw"], True)
+            self.servos.increment_angle(self.config["arm"]["claw"]["id"], True)
 
     def gamepad_movement_handler(self, type="TRIGGER"):
         if type == "TRIGGER":
