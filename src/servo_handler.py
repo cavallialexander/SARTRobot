@@ -56,8 +56,8 @@ class ServoHandler:
 
     def get_initial_messages(self):
         msg = []
-        for part, conf in self.config["servos"]["items"].entries():
-            msg.append([part, self.Servos[conf["id"]]])
+        for _id in self.config['servos']['ids']:
+            msg.append([_id, self.Servos[_id]])
         return {"SERVO_POS": msg}
 
     def go_to_pos(self, channel, pos):
