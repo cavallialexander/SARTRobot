@@ -155,6 +155,7 @@ class ControlReceiver(WebSocketProcess):
         elif control == "MAPPING":
             if value == "DOWN":
                 self.logger.info("GOING drive")
+                self.logger.info("inputs: {} {}", int(self.config["arm"]["elbow"]["id"]), int(self.config["arm"]["elbow"]["drive"]))
                 self.servos.go_to_pos(int(self.config["arm"]["elbow"]["id"]), int(self.config["arm"]["elbow"]["drive"]))
                 self.logger.info("GOING drive: 1")
                 self.servos.go_to_pos(int(self.config["arm"]["shoulder"]["id"]), int(self.config["arm"]["shoulder"]["drive"]))
