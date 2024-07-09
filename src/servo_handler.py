@@ -60,14 +60,14 @@ class ServoHandler:
             msg.append([_id, self.Servos[_id]])
         return {"SERVO_POS": msg}
 
-    def go_to_pos(self, channel, pos):
+    def go_to_pos(self, channel, pos, time=None):
         self.logger.debug("Moving servo {} to {}".format(channel, pos))
-        self.Servos[channel] = self.connection.go_to(channel, pos)
+        self.Servos[channel] = self.connection.go_to(channel, pos, time)
         self.logger.debug("Sending updated servo pos of {}".format(self.Servos[channel]))
         self.pipe.send(["SERVO_POS", self.Servos[channel], pos])
 
     def increment_angle(self, channel, positive):
-        self.go_to_pos(channel, self.Servos[channel] + (_INCREMENT if positive else -_INCREMENT))
+        self.go_to_pos(channel, self.Servos[channel] + (_INCREMENT if positive else -_INCREMENT), 10)
     
     def move(self, channel, speed):
         pass
