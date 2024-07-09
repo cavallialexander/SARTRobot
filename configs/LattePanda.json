@@ -95,17 +95,18 @@
     "cameras": {
       "front": {
         "enabled": true,
-        "id": 1
+        "id": 0
       },
       "back": {
-        "enabled": true,
-        "id": 3
+        "enabled": false
       },
       "left": {
-        "enabled": false
+        "enabled": true,
+        "id": 1
       },
       "right": {
-        "enabled": false
+        "enabled": true,
+        "id": 2
       }
     },
     "graphs": [
