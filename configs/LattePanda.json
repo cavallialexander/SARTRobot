@@ -44,8 +44,8 @@
       },
       "port": "SW_SERIAL1",
       "baudrate": 9600,
-      "tx": 9,
-      "rx": 10
+      "tx": 10,
+      "rx": 9
     },
     "ids": [
       1,
