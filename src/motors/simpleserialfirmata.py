@@ -76,11 +76,13 @@ class SimpleSerialConnection(MotorWrapper):
         if left is not None:
             offset = 64  # if left > 0 else 0
             msg = offset + (round(62 / 1000 * left))
+            self.logger.info(f"moving left motor {msg}")
             self.firmata.serialWriteRaw(self.port, bytes([msg]))
         # Right side
         if right is not None:
             offset = 64  # if right > 0 else 0
             msg = offset + 128 + (round(62 / 1000 * right))
+            self.logger.info(f"moving right motor {msg}")
             self.firmata.serialWriteRaw(self.port, bytes([msg]))
 
     def stop(self):
